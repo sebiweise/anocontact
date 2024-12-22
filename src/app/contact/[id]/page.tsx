@@ -2,9 +2,14 @@ import { notFound } from 'next/navigation';
 import { ContactForm } from '../components/ContactForm';
 import { db } from '@/server/db';
 
-export default async function ContactPage({ params }: { params: { id: string } }) {
+interface ContactPageProps {
+    params: Promise<{ id: string }>
+}
+
+export default async function ContactPage({ params }: ContactPageProps) {
+    const id = (await params).id;
     const qrCode = await db.qRCode.findUnique({
-        where: { id: params.id },
+        where: { id: id },
     });
 
     if (!qrCode) {
@@ -13,7 +18,7 @@ export default async function ContactPage({ params }: { params: { id: string } }
 
     // Increment the scan count
     await db.qRCode.update({
-        where: { id: params.id },
+        where: { id: id },
         data: { scans: { increment: 1 } },
     });
 

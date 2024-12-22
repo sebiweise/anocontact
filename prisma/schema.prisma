@@ -18,7 +18,7 @@ model QRCode {
     description        String?
     contactInfo        String
     contactEmail       String?
-    turnstileSitekey   String?
+    turnstileSiteKey   String?
     turnstileSecretKey String?
     scans              Int      @default(0)
     createdAt          DateTime @default(now())
